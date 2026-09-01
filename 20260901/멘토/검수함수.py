@@ -108,6 +108,6 @@ def 검수(경로):
     # 불리언 결과 반환
 
 
-result_4 = 검수("정제결과_최종.csv")
+# result_4 = 검수("정제결과_최종.csv")
 
-print("전체 통과:", result_4)
+# print("전체 통과:", result_4)

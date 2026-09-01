@@ -21,6 +21,11 @@
 
 import numpy as np
 import pandas as pd
+import os
+from pathlib import Path
+
+
+# print(os.getcwd())
 
 원본 = pd.read_csv("로그배치1.csv", encoding="utf-8-sig")
 지표 = ["CPU온도", "전력", "응답시간", "메모리"]
@@ -479,38 +484,52 @@ print(known_normalized_3[지표].equals(again_3[지표]))
 #
 # (멘티 파일에는 센서ID가 없으므로 키 중복 검사는 수집시각+구역으로 동작합니다)
 
-original_5 = pd.read_csv("로그배치1.csv", encoding="utf-8-sig")
-# 원본 로그배치1 불러오기
 
+original_5 = pd.read_csv("로그배치1.csv", encoding="utf-8-sig")
 
 original_5["전력"] = pd.to_numeric(original_5["전력"], errors="coerce")
+
 # 전력을 숫자로 변환
 
+# 와 이제 진짜 to_numeric() 안 까먹을듯
 
 duplicate_removed_5 = original_5.drop_duplicates().copy()
-# 완전 중복 행만 제거한 표
 
+# 완전 중복 제거한 표
 
-mentee_5 = pd.read_csv("정제결과_멘티.csv", encoding="utf-8-sig")
-# 멘티가 제출한 정제결과 불러오기
+mentee_5 = pd.read_csv(
+    r"C:\Users\swrkd\Documents\GitHub\assignment\20260901\정제결과_멘티.csv",
+    encoding="utf-8-sig",
+)
 
+# 정제결과_멘티.csv는 20260901 폴더에 있어서 해당 위치에서 불러옴
 
 mentor_5 = pd.read_csv("정제결과_최종.csv", encoding="utf-8-sig")
-# 내가 만든 최종 정제결과 불러오기
-
 
 print(len(original_5), len(duplicate_removed_5), len(mentee_5))
-# 원본 / 완전 중복만 제거한 표 / 멘티 결과의 행 수
-# 기대 출력: 186 182 179
 
+# 원본 186 / 완전 중복만 제거한 표 182/ 멘티 결과의 행 수 179
 
 print("멘티:", mentee_5["구역"].value_counts().sort_index().to_dict())
-# 멘티 결과의 구역별 행 수
-# 기대 출력:
+
 # 멘티: {'Z1-알파': 60, 'Z2-브라보': 62, 'Z3-찰리': 57}
 
-
 print("멘토:", mentor_5["구역"].value_counts().sort_index().to_dict())
-# 내 최종 결과의 구역별 행 수
-# 기대 출력:
+
 # 멘토: {'Z1-알파': 60, 'Z2-브라보': 60, 'Z3-찰리': 60}
+
+
+from 검수함수 import 검수
+
+print("[멘티 파일]")
+
+mentee_check_5 = 검수(
+    r"C:\Users\swrkd\Documents\GitHub\assignment\20260901\정제결과_멘티.csv"
+)
+
+print("[멘토 파일]")
+
+mentor_check_5 = 검수("정제결과_최종.csv")
+
+print(mentee_check_5, mentor_check_5)
+# 멘티는 False 멘토는 True
